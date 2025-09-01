@@ -263,11 +263,22 @@ class _DocumentScannerWidgetState extends State<DocumentScannerWidget>
       return const Center(child: CircularProgressIndicator());
     }
 
+    Widget cameraWidget = CameraPreview(_cameraController!);
+    
+    // Apply custom preview size if configured
+    if (widget.config.previewSize != null) {
+      cameraWidget = SizedBox(
+        width: widget.config.previewSize!.width,
+        height: widget.config.previewSize!.height,
+        child: ClipRect(child: cameraWidget),
+      );
+    }
+
     return Stack(
       fit: StackFit.expand,
       children: [
-        // Camera preview
-        CameraPreview(_cameraController!),
+        // Camera preview with configured size
+        Center(child: cameraWidget),
         
         // Detection overlay
         _buildOverlay(),
@@ -329,12 +340,33 @@ class DocumentOverlayPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = config.frameThickness;
 
-    // Calculate frame bounds with padding
-    final frameRect = Rect.fromLTRB(
-      config.framePadding,
-      config.framePadding,
-      size.width - config.framePadding,
-      size.height - config.framePadding,
+    // Calculate frame bounds with ID card aspect ratio (1.588:1)
+    const double idCardAspectRatio = 1.588;
+    final availableWidth = size.width - (config.framePadding * 2);
+    final availableHeight = size.height - (config.framePadding * 2);
+    
+    double frameWidth, frameHeight;
+    
+    // Calculate frame size based on ID card aspect ratio
+    if (availableWidth / availableHeight > idCardAspectRatio) {
+      // Constrained by height
+      frameHeight = availableHeight;
+      frameWidth = frameHeight * idCardAspectRatio;
+    } else {
+      // Constrained by width
+      frameWidth = availableWidth;
+      frameHeight = frameWidth / idCardAspectRatio;
+    }
+    
+    // Center the frame
+    final frameLeft = (size.width - frameWidth) / 2;
+    final frameTop = (size.height - frameHeight) / 2;
+    
+    final frameRect = Rect.fromLTWH(
+      frameLeft,
+      frameTop,
+      frameWidth,
+      frameHeight,
     );
 
     // Draw main frame

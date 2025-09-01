@@ -40,7 +40,7 @@ class DocumentScannerConfig {
     // Frame configuration
     this.frameThickness = 4.0,
     this.frameBorderRadius = 12.0,
-    this.framePadding = 24.0,
+    this.framePadding = 32.0,
     this.frameColorIdle = Colors.white,
     this.frameColorDetected = Colors.green,
     this.frameColorAnimationDuration = const Duration(milliseconds: 300),
@@ -48,11 +48,11 @@ class DocumentScannerConfig {
     // Detection configuration
     this.documentStabilityDuration = const Duration(seconds: 1),
     this.documentDetectionSensitivity = 0.7,
-    this.minimumDocumentArea = 0.1,
+    this.minimumDocumentArea = 0.15,
 
     // Output configuration
     this.outputLongSide,
-    this.outputAspectRatio,
+    this.outputAspectRatio = 1.588, // ID card aspect ratio by default
     this.colorMode = ColorMode.color,
     this.documentPadding = 0.05,
 
@@ -60,6 +60,41 @@ class DocumentScannerConfig {
     this.enableHapticFeedback = true,
     this.enableAudioFeedback = false,
   });
+
+  /// Create configuration optimized for ID card scanning
+  const DocumentScannerConfig.idCard({
+    Size? previewSize,
+    ResolutionPreset resolutionPreset = ResolutionPreset.high,
+    CameraLensDirection cameraLensDirection = CameraLensDirection.back,
+    double frameThickness = 3.0,
+    double frameBorderRadius = 8.0,
+    double framePadding = 40.0,
+    Color frameColorIdle = Colors.white,
+    Color frameColorDetected = Colors.green,
+    Duration documentStabilityDuration = const Duration(milliseconds: 1500),
+    double documentDetectionSensitivity = 0.8,
+    int? outputLongSide = 1080,
+    ColorMode colorMode = ColorMode.color,
+    double documentPadding = 0.08,
+    bool enableHapticFeedback = true,
+  }) : this(
+          previewSize: previewSize,
+          resolutionPreset: resolutionPreset,
+          cameraLensDirection: cameraLensDirection,
+          frameThickness: frameThickness,
+          frameBorderRadius: frameBorderRadius,
+          framePadding: framePadding,
+          frameColorIdle: frameColorIdle,
+          frameColorDetected: frameColorDetected,
+          documentStabilityDuration: documentStabilityDuration,
+          documentDetectionSensitivity: documentDetectionSensitivity,
+          minimumDocumentArea: 0.2, // Higher minimum for ID cards
+          outputLongSide: outputLongSide,
+          outputAspectRatio: 1.588, // Standard ID card ratio
+          colorMode: colorMode,
+          documentPadding: documentPadding,
+          enableHapticFeedback: enableHapticFeedback,
+        );
 
   DocumentScannerConfig copyWith({
     Size? previewSize,
