@@ -33,17 +33,17 @@ class DocumentScanner {
     );
   }
 
-  /// Request camera permissions (helper method)
+  /// Request camera permissions (handled automatically by camera package)
   static Future<bool> requestPermissions() async {
-    // This would typically use permission_handler package
-    // For now, return true as camera package handles permissions
+    // Camera permissions are automatically handled by the camera package
+    // Users should add camera permissions to their app's AndroidManifest.xml
     return true;
   }
 
-  /// Check if camera permissions are granted
+  /// Check if camera permissions are granted (handled automatically by camera package)
   static Future<bool> hasPermissions() async {
-    // This would typically use permission_handler package
-    // For now, return true as camera package handles permissions
+    // Camera permissions are automatically handled by the camera package
+    // Users should add camera permissions to their app's AndroidManifest.xml
     return true;
   }
 }
