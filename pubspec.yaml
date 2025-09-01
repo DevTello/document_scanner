@@ -1,7 +1,6 @@
 name: document_scanner
-description: "A new Flutter package project."
+description: "A Flutter package for detecting documents and cropping images with perspective correction."
 version: 0.0.1
-homepage:
 
 environment:
   sdk: ^3.8.1
@@ -10,6 +9,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  camera: ^0.10.5+9
+  image: ^4.1.7
+  opencv_dart: ^1.0.4
+  path_provider: ^2.1.2
 
 dev_dependencies:
   flutter_test:
@@ -21,6 +24,11 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.example.document_scanner
+        pluginClass: DocumentScannerPlugin
 
   # To add assets to your package, add an assets section, like this:
   # assets:
